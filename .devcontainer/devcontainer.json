@@ -1,0 +1,5 @@
+{
+	"name": "comp3000",
+	"image": "openjdk:11",
+	"onCreateCommand": "bash .devcontainer/install.sh"
+}
