@@ -1,3 +1,4 @@
+package assignment1;
 import java.util.Scanner;
 
 public class Expander {
@@ -13,7 +14,9 @@ public class Expander {
             System.out.println("bye bye");
             return;
         }else{
+            if(!input.isEmpty()){
             processInput(input);
+            }
             repl();
         }
         
@@ -35,6 +38,7 @@ public class Expander {
 
     }
     private void execute(String action) throws InvalidRepetitionActionException, StackUnderFlowException{
+        action = action.trim();
         if(action.isEmpty()){
             return;
         }
