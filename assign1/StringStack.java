@@ -12,5 +12,11 @@ public class StringStack {
     }
     public String peek(){
         return stack.peek();
-}
+    }
+    public String pop(){
+        return stack.pop();
+    }
+    public void push(String str){
+        stack.push(str);
+    }
 }
