@@ -21,4 +21,7 @@ public class StringStack {
     public void push(String str){
         stack.push(str);
     }
+    public int size(){
+        return stack.size();
+    }
 }

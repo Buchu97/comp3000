@@ -38,7 +38,7 @@ public class Expander {
 
     }
     private void execute(String action) throws InvalidRepetitionActionException, StackUnderFlowException{
-        action = action.trim();
+       
         if(action.isEmpty()){
             return;
         }
@@ -54,7 +54,14 @@ public class Expander {
                 repeatTop(times, delim);
                 
                 break;
-            
+            case '+':
+            if(stack.size()<2){
+                    throw new StackUnderFlowException("error : not enough element in the stack");
+                }
+                String joinDelim = action.length()>1 ? action.substring(1) : "";
+                System.out.println("l"+joinDelim+"r");
+                concat(joinDelim);
+                break;
             default:
                 stack.push(action);
         }
@@ -77,5 +84,10 @@ public class Expander {
         }else{
             return str+delim+repeatTopHelper(times-1, delim,  str);
         }
+    }
+    private void concat(String joinDelim){
+        String first = stack.pop();
+        String second = stack.pop();
+        stack.push( second+ joinDelim + first);
     }
 }
