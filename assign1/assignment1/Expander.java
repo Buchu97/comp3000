@@ -56,20 +56,25 @@ public class Expander {
                 break;
             case '+':
             if(stack.size()<2){
-                    throw new StackUnderFlowException("error : not enough element in the stack");
+                    throw new StackUnderFlowException("error in action: empty stack");
                 }
                 String joinDelim = action.length()>1 ? action.substring(1) : "";
                 System.out.println("l"+joinDelim+"r");
                 concat(joinDelim);
                 break;
             default:
+            if(Character.isLetter(firstChar)){
                 stack.push(action);
+            }else{
+                throw new InvalidRepetitionActionException("error in action: " + action);
+            }
+                
         }
        
     }
     private void repeatTop(int times, String delim) throws StackUnderFlowException{
         if(stack.isEmpty()){
-            throw new StackUnderFlowException("Empty stack on repeat operation." + delim);
+            throw new StackUnderFlowException("error in action: empty stack");
         }
         String top = stack.pop();
         String result = repeatTopHelper(times, delim, top);
