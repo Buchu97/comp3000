@@ -1,9 +1,10 @@
 package assignment1;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Expander {
     private static final Scanner scan = new Scanner(System.in);
-    private static StringStack stack = new StringStack();
+    private static Stack<String> stack = new Stack<>();
     public void start(){
         repl();
     }
