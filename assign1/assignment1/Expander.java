@@ -32,6 +32,7 @@ public class Expander {
             }
             String result = stack.peek();
             System.out.println(result);
+            stack.clear();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -47,10 +48,10 @@ public class Expander {
         switch (firstChar) {
             case '*':
                 if(action.length()<2 || !Character.isDigit(action.charAt(1))){
-                    throw new InvalidRepetitionActionException("not good" + action);
+                    throw new InvalidRepetitionActionException("error in action: " + action);
                 }
                 int times = Character.getNumericValue(action.charAt(1));
-                String delim = action.substring(2);
+                char delim = action.charAt(1);
                 repeatTop(times, delim);
                 
                 break;
@@ -58,7 +59,7 @@ public class Expander {
             if(stack.size()<2){
                     throw new StackUnderFlowException("error in action: empty stack");
                 }
-                String joinDelim = action.length()>1 ? action.substring(1) : "";
+               char joinDelim = action.length()>1 ? action.charAt(1) : '\0';
                 System.out.println("l"+joinDelim+"r");
                 concat(joinDelim);
                 break;
@@ -72,7 +73,7 @@ public class Expander {
         }
        
     }
-    private void repeatTop(int times, String delim) throws StackUnderFlowException{
+    private void repeatTop(int times, char delim) throws StackUnderFlowException{
         if(stack.isEmpty()){
             throw new StackUnderFlowException("error in action: empty stack");
         }
@@ -83,14 +84,14 @@ public class Expander {
         
 
     }
-    private String repeatTopHelper(int times, String delim, String str){
+    private String repeatTopHelper(int times, char delim, String str){
         if(times<=1){
             return str;
         }else{
             return str+delim+repeatTopHelper(times-1, delim,  str);
         }
     }
-    private void concat(String joinDelim){
+    private void concat(char joinDelim){
         String first = stack.pop();
         String second = stack.pop();
         stack.push( second+ joinDelim + first);

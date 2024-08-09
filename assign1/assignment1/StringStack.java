@@ -24,4 +24,7 @@ public class StringStack {
     public int size(){
         return stack.size();
     }
+    public void clear(){
+        stack.clear();
+    }
 }
