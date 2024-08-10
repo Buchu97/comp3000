@@ -39,7 +39,7 @@ public class Expander {
         }
 
     }
-    private void execute(String action) throws InvalidRepetitionActionException, StackUnderFlowException{
+    private void execute(String action) throws Exception{
        
         if(action.isEmpty()){
             return;
@@ -49,16 +49,20 @@ public class Expander {
         switch (firstChar) {
             case '*':
                 if(action.length()<2 || !Character.isDigit(action.charAt(1))){
-                    throw new InvalidRepetitionActionException("error in action: " + action);
+                    throw new Exception("error in action: " + action);
                 }
                 int times = Character.getNumericValue(action.charAt(1));
-                char delim = action.charAt(1);
+                char delim = '\0';
+                if(action.length()>2){
+                    delim = action.charAt(2);
+                    
+                }
                 repeatTop(times, delim);
                 
                 break;
             case '+':
             if(stack.size()<2){
-                    throw new StackUnderFlowException("error in action: empty stack");
+                    throw new Exception("error in action: empty stack");
                 }
                char joinDelim = action.length()>1 ? action.charAt(1) : '\0';
                 System.out.println("l"+joinDelim+"r");
@@ -68,15 +72,15 @@ public class Expander {
             if(Character.isLetter(firstChar)){
                 stack.push(action);
             }else{
-                throw new InvalidRepetitionActionException("error in action: " + action);
+                throw new Exception("error in action: " + action);
             }
                 
         }
        
     }
-    private void repeatTop(int times, char delim) throws StackUnderFlowException{
+    private void repeatTop(int times, char delim) throws Exception{
         if(stack.isEmpty()){
-            throw new StackUnderFlowException("error in action: empty stack");
+            throw new Exception("error in action: empty stack");
         }
         String top = stack.pop();
         String result = repeatTopHelper(times, delim, top);
@@ -97,4 +101,9 @@ public class Expander {
         String second = stack.pop();
         stack.push( second+ joinDelim + first);
     }
+    public static void main(String[] args){
+        Expander expander = new Expander();
+        expander.start();
+        
+        }
 }
