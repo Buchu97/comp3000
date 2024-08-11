@@ -29,30 +29,34 @@ public class Main {
         String[] actions = input.split(";");
        
         try{
-            for(String action : actions){
-                execute(action);
-                // System.out.println(action + " from processInput");
-            }
+            processInputHelper(actions,0);
             String result = stack.pop();
+            
             int resultLength = result.length();
 
             System.out.println(result);
-            System.out.println(intialLength);
-            System.out.println(resultLength);
             
             System.out.println("expansion multiplier: "+ String.format("%.2f", (double)resultLength / intialLength)+"x");
-            stack.clear();
+           
         }catch(Exception e){
             System.out.println(e.getMessage());
+        }finally{
+            stack.clear();
         }
 
     }
+    private void processInputHelper(String[] actions, int index) throws Exception{
+        if(index>=actions.length){
+            return;
+        }
+        execute(actions[index]);
+        processInputHelper(actions,index+1);
+    } 
     private void execute(String action) throws Exception{
        
         if(action.isEmpty()){
             return;
         }
-        // System.out.println(action);
         char firstChar = action.charAt(0);
         switch (firstChar) {
             case '*':
