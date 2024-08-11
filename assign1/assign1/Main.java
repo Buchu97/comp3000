@@ -1,8 +1,9 @@
-package assignment1;
+package assign1;
 import java.util.Scanner;
 import java.util.Stack;
 
-public class Expander {
+
+public class Main {
     private static final Scanner scan = new Scanner(System.in);
     private static Stack<String> stack = new Stack<>();
     public void start(){
@@ -24,15 +25,22 @@ public class Expander {
 
     }
     private void processInput(String input){
+        int intialLength = input.length();
         String[] actions = input.split(";");
-        String initial = stack.isEmpty() ? "" : stack.peek();
+       
         try{
             for(String action : actions){
                 execute(action);
                 // System.out.println(action + " from processInput");
             }
-            String result = stack.peek();
+            String result = stack.pop();
+            int resultLength = result.length();
+
             System.out.println(result);
+            System.out.println(intialLength);
+            System.out.println(resultLength);
+            
+            System.out.println("expansion multiplier: "+ String.format("%.2f", (double)resultLength / intialLength)+"x");
             stack.clear();
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -48,14 +56,23 @@ public class Expander {
         char firstChar = action.charAt(0);
         switch (firstChar) {
             case '*':
-                if(action.length()<2 || !Character.isDigit(action.charAt(1))){
+                if(action.length()<2){
                     throw new Exception("error in action: " + action);
+                }
+                if(!Character.isDigit(action.charAt(1))){
+                    throw new Exception("error in action: " + action.charAt(1));
                 }
                 int times = Character.getNumericValue(action.charAt(1));
                 char delim = '\0';
-                if(action.length()>2){
+                if(action.length()==3){
+                    if(Character.isDigit(action.charAt(2))){
+                        throw new Exception("error in action: " + action.charAt(2));
+                    }
                     delim = action.charAt(2);
                     
+                }
+                if(action.length()>3){
+                    throw new Exception("error in action: " + action.charAt(3));
                 }
                 repeatTop(times, delim);
                 
@@ -64,8 +81,10 @@ public class Expander {
             if(stack.size()<2){
                     throw new Exception("error in action: empty stack");
                 }
+                if(action.length()>2){
+                    throw new Exception("error in action: " + action.charAt(2));
+                }
                char joinDelim = action.length()>1 ? action.charAt(1) : '\0';
-                System.out.println("l"+joinDelim+"r");
                 concat(joinDelim);
                 break;
             default:
@@ -93,6 +112,9 @@ public class Expander {
         if(times<=1){
             return str;
         }else{
+            if(delim ==  '\0'){
+                return str+repeatTopHelper(times-1, delim,  str);
+            }
             return str+delim+repeatTopHelper(times-1, delim,  str);
         }
     }
@@ -102,7 +124,7 @@ public class Expander {
         stack.push( second+ joinDelim + first);
     }
     public static void main(String[] args){
-        Expander expander = new Expander();
+        Main expander = new Main();
         expander.start();
         
         }
